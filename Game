@@ -1,0 +1,112 @@
+let lives = 5;
+const O1 = WORLD.getObject("O1");
+const X1 = WORLD.getObject("X1");
+const O2 = WORLD.getObject("O2");
+const X2 = WORLD.getObject("X2");
+const O3 = WORLD.getObject("O3");
+const X3 = WORLD.getObject("X3");
+const O4 = WORLD.getObject("O4");
+const X4 = WORLD.getObject("X4");
+const O5 = WORLD.getObject("O5");
+const X5 = WORLD.getObject("X5");
+
+const wall1 = WORLD.getObject("wall1");
+const wall2 = WORLD.getObject("wall2");
+const wall3 = WORLD.getObject("wall3");
+const wall4 = WORLD.getObject("wall4"); 
+const livesDisplay = GUI.getObject("livesDisplay");
+const quizDisplay = GUI.getObject("quizDisplay"); // 퀴즈 표시 GUI
+
+let currentQuestion = 0;
+const questions = [
+    "여름철 실내 냉방기(에어컨) 적정온도는 26℃이상, 겨울철은 20℃ 이다.",
+    "지구 온난화는 주로 화산 활동으로 인해 발생한다.",
+    "온실가스에는 이산화탄소(CO2), 메탄(CH4), 아산화질소(N2O) 등이 포함된다.",
+    "온실가스 배출을 줄이면 지구의 기온 상승을 완전히 막을 수 있다.",
+    "기후 변화는 앞으로 몇 년간 식량 생산에 영향을 미칠 수 있다."
+];
+
+function updateLivesDisplay() {
+    livesDisplay.setText(`목숨: ${lives}`);
+}
+
+function updateQuizDisplay() {
+    quizDisplay.setText(questions[currentQuestion]);
+}
+
+function checkAnswer() {
+    // 첫번째 문제
+    PLAYER.onCollide(O1, () => {
+        wall1.move(-200, 0, 0, 20);
+        nextQuestion();
+    });
+
+    PLAYER.onCollide(X1, () => {
+        loseLife();
+    });
+
+    // 두번째 문제
+    PLAYER.onCollide(X2, () => {
+        wall2.move(-200, 0, 0, 20);
+        nextQuestion();
+    });
+
+    PLAYER.onCollide(O2, () => {
+        loseLife();
+    });
+
+    // 세번째 문제
+    PLAYER.onCollide(O3, () => {
+        wall3.move(-200, 0, 0, 20);
+        nextQuestion();
+    });
+
+    PLAYER.onCollide(X3, () => {
+        loseLife();
+    });
+
+    // 네번째 문제
+    PLAYER.onCollide(X4, () => {
+        wall4.move(-200, 0, 0, 20);
+        nextQuestion();
+    });
+
+    PLAYER.onCollide(O4, () => {
+        loseLife();
+    });
+
+    // 다섯번째 문제
+    PLAYER.onCollide(O5, () => {
+        alert("성공");
+    });
+
+    PLAYER.onCollide(X5, () => {
+        loseLife();
+    });
+}
+
+function loseLife() {
+    lives -= 1;
+    updateLivesDisplay();
+    if (lives <= 0) {
+        lives = 0;
+        alert("게임 오버!");
+    }
+}
+
+function nextQuestion() {
+    currentQuestion += 1;
+    if (currentQuestion < questions.length) {
+        updateQuizDisplay();
+    }
+}
+
+function Start() {
+    updateLivesDisplay();
+    updateQuizDisplay();
+    checkAnswer();
+}
+
+function Update(dt) {
+
+}
